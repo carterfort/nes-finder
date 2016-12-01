@@ -3,8 +3,9 @@
 namespace App\Console\Commands;
 
 use App\User;
-use App\Notifications\WeGotOne;
+use App\StoreRecord;
 use Illuminate\Console\Command;
+use App\Notifications\StillNothing;
 use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Facades\Notification;
 
@@ -22,7 +23,7 @@ class FindNeses extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Send forth the doves';
 
     /**
      * Create a new command instance.
@@ -58,24 +59,9 @@ class FindNeses extends Command
             $sale = intval($datums->item(2)->nodeValue);
             $available = intval($datums->item(3)->nodeValue);
 
-            if ($sale > 0 || $available || 0){
-                $this->foundOne($name);
-            } else {
-                $this->pulse();
-            }
+          	StoreRecord::record($name, $sale, $available);
         }
-    }
 
-    protected function foundOne($name)
-    {
-        $user = (new User(['slack_webhook_url' => 'https://hooks.slack.com/services/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']));
-        $user->notify(new WeGotOne($name));
-    }
-
-    public function pulse()
-    {
-        $user = (new User(['slack_webhook_url' => 'https://hooks.slack.com/services/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']));
-        $user->notify(new StillNothing($name));
     }
 
     protected function htmlForSearching()

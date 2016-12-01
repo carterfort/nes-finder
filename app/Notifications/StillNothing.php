@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\SlackMessage;
 
 class StillNothing extends Notification
 {
@@ -41,7 +42,6 @@ class StillNothing extends Notification
     public function toSlack($notifiable)
     {
         return (new SlackMessage)
-                    ->error()
                     ->content('Keep on dreaming :(');
     }
 

@@ -13,15 +13,19 @@ class WeGotOne extends Notification
     use Queueable;
 
     private $storeName;
+    private $sale;
+    private $available;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($storeName)
+    public function __construct($storeName, $sale, $available)
     {
         $this->name = $storeName;
+        $this->sale = $sale;
+        $this->available = $available;
     }
 
     /**
@@ -45,7 +49,7 @@ class WeGotOne extends Notification
     {
         return (new SlackMessage)
                     ->success()
-                    ->content('Get your ass to '.$this->name.' and get that sweet sweet NES Classic!');
+                    ->content($this->name.' has '.$this->sale.'-'. $this->available.' NES Classics');
     }
 
     /**
